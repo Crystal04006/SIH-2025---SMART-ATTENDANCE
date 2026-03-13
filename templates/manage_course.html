@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage {{ course.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">SmartAttend</div>
+        <div class="nav-links">
+            <a href="{{ url_for('teacher_dashboard') }}">Dashboard</a>
+            <span>Welcome, {{ user.name }}</span>
+            <button id="theme-toggle">☀️</button>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Manage Course: {{ course.name }}</h1>
+        <a href="{{ url_for('teacher_dashboard') }}" style="color: var(--accent-secondary); font-weight: 600;">&larr; Back to Dashboard</a>
+        <a href="{{ url_for('download_report', course_id=course.id) }}" class="button-secondary" style="float:right;">Download Report (CSV)</a>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash-message flash-{{ category }}" style="margin-top: 4rem;">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="grid-container" style="margin-top: 2rem;">
+            <div class="card">
+                <h3>Enrolled Students</h3>
+                <ul>
+                    {% for student in students %}
+                        <li>
+                            {{ student.name }} - {{ student.username }}
+                            <a href="{{ url_for('student_history', student_id=student.id, course_id=course.id) }}" style="float: right;">View History</a>
+                        </li>
+                    {% else %}
+                        <li>No students enrolled yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card">
+                <h3>
+                    Enroll an Existing Student
+                    <span class="tooltip">ⓘ<span class="tooltip-text">Add a student to this course roster. Student accounts must first be created by your institution's administrator.</span></span>
+                </h3>
+                <form action="{{ url_for('enroll_student') }}" method="post">
+                    <input type="hidden" name="course_id" value="{{ course.id }}">
+                    <input type="text" name="student_id" placeholder="Enter Student ID" required>
+                    <button type="submit">Enroll Student</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/teacher.js') }}"></script>
+</body>
+</html>
+

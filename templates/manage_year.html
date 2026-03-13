@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Year {{ year.year }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">SmartAttend</div>
+        <div class="nav-links">
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <span>Admin: {{ user.name }}</span>
+            <button id="theme-toggle">☀️</button>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Managing Academic Year: {{ year.year }}</h1>
+        <a href="{{ url_for('admin_dashboard') }}" style="color: var(--accent-secondary); font-weight: 600;">&larr; Back to Main Dashboard</a>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div style="margin-top: 2rem;">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="grid-container" style="margin-top: 2rem;">
+            <div class="card">
+                <h3>Batches in {{ year.year }}</h3>
+                <ul>
+                    {% for batch in batches %}
+                        <li>
+                            <strong>{{ batch.name }}</strong>
+                            <a href="{{ url_for('manage_batch', batch_id=batch.id) }}">Manage Students</a>
+                        </li>
+                    {% else %}
+                        <li>No batches created for this year yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Create a New Batch</h3>
+                <form action="{{ url_for('add_batch') }}" method="post">
+                    <input type="hidden" name="year_id" value="{{ year.id }}">
+                    <input type="text" name="batch_name" placeholder="e.g., Computer Science" required>
+                    <button type="submit">Create Batch</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/teacher.js') }}"></script>
+</body>
+</html>
+

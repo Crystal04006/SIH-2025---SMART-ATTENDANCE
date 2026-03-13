@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">SmartAttend</div>
+        <div class="nav-links">
+            <a href="{{ url_for('teacher_dashboard') }}">Dashboard</a>
+            <span>Welcome, {{ user.name }}</span>
+            <button id="theme-toggle">☀️</button>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <a href="{{ url_for('manage_course', course_id=course.id) }}" style="color: var(--accent-secondary); font-weight: 600;">&larr; Back to {{ course.name }}</a>
+        <div class="card" style="margin-top: 1rem;">
+            <h2>Student: {{ student.name }} - {{ student.username }}</h2>
+            <h3>Course: {{ course.name }}</h3>
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 1.5rem 0;">
+            <h3>Overall Statistics</h3>
+            <ul>
+                <li><strong>Total Classes Held:</strong> {{ stats.total_classes }}</li>
+                <li><strong>Days Present:</strong> {{ stats.present }}</li>
+                <li><strong>Days Absent:</strong> {{ stats.absent }}</li>
+                <li><strong>Attendance Percentage:</strong> <span style="font-weight: bold; color: {{ '#00F5D4' if stats.percentage >= 75 else '#FF007F' }}">{{ stats.percentage }}%</span></li>
+            </ul>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/teacher.js') }}"></script>
+</body>
+</html>
+

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">SmartAttend</div>
+        <div class="nav-links">
+            <a href="{{ url_for('manage_staff') }}">Manage Staff</a>
+            <span>Admin: {{ user.name }}</span>
+            <button id="theme-toggle">☀️</button>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Institution Admin Dashboard</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message flash-{{ category }}">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="card">
+            <h3>
+                Manage Academic Years & Batches
+                <span class="tooltip">ⓘ<span class="tooltip-text">Create academic years first, then add specific batches (e.g., departments or sections) within each year to organize your students.</span></span>
+            </h3>
+            <div class="grid-container">
+                <div>
+                    <h4>Existing Academic Years</h4>
+                    <ul>
+                        {% for year in years %}
+                            <li>
+                                <strong>{{ year.year }}</strong>
+                                <a href="{{ url_for('manage_year', year_id=year.id) }}">Manage Batches & Students</a>
+                            </li>
+                        {% else %}
+                            <li>No academic years created yet.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div>
+                    <h4>Create a New Academic Year</h4>
+                    <form action="{{ url_for('add_year') }}" method="post">
+                        <input type="text" name="year" placeholder="e.g., 2024-2025" required>
+                        <button type="submit">Create Year</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/teacher.js') }}"></script> 
+</body>
+</html>
+

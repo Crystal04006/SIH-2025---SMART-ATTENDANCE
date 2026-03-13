@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Teacher Account</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="card auth-card">
+            <h2>Create Teacher Account</h2>
+             {% if error %}
+                <p style="color: #F5B7B1;">{{ error }}</p>
+            {% endif %}
+            <form action="/register" method="post">
+                <input type="text" name="username" placeholder="Choose a Username" required>
+                <input type="password" name="password" placeholder="Choose a Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p style="text-align: center; margin-top: 1rem;">
+                <a href="{{ url_for('login') }}">Already have an account? Login</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Institution</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        // This script applies the theme instantly to prevent a flash of the wrong theme.
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.documentElement.classList.add('light-mode-html');
+        }
+    </script>
+    <style>
+        .light-mode-html {
+            --bg-start: #FDFEFE;
+            --bg-end: #F8F9FA;
+        }
+    </style>
+</head>
+<body class="{{ 'light-mode' if savedTheme == 'light' else '' }}">
+    <div class="auth-container">
+        <div class="card auth-card">
+            <h2 style="text-align: center; color: var(--accent-primary);">Register Institution</h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-top: -0.5rem; margin-bottom: 2rem;">The first user becomes the Administrator.</p>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('register_institution') }}" method="post">
+                <input type="text" name="institution_name" placeholder="Institution Name" required>
+                <input type="text" name="admin_username" placeholder="Your Admin Username" required>
+                <input type="password" name="admin_password" placeholder="Your Admin Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p style="text-align: center; margin-top: 1.5rem;">
+                <a href="{{ url_for('login') }}">Already registered? Login</a>
+            </p>
+        </div>
+    </div>
+     <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Batch {{ batch.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">SmartAttend</div>
+        <div class="nav-links">
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <span>Admin: {{ user.name }}</span>
+            <button id="theme-toggle">☀️</button>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Managing Batch: {{ batch.name }}</h1>
+        <a href="{{ url_for('manage_year', year_id=batch.year_id) }}" style="color: var(--accent-secondary); font-weight: 600;">&larr; Back to Year Management</a>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div style="margin-top: 2rem;">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="grid-container" style="margin-top: 2rem;">
+            <div class="card">
+                <h3>Students in this Batch</h3>
+                <ul>
+                    {% for student in students %}
+                        <li>{{ student.name }} - {{ student.username }}</li>
+                    {% else %}
+                        <li>No students have been added to this batch yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Add a Single Student</h3>
+                <form action="{{ url_for('add_single_student') }}" method="post">
+                    <input type="hidden" name="batch_id" value="{{ batch.id }}">
+                    <input type="text" name="student_name" placeholder="Student's Full Name" required>
+                    <input type="text" name="student_id" placeholder="Student's Unique ID" required>
+                    <button type="submit">Add Student</button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>
+                    Bulk Import Students
+                    <span class="tooltip">ⓘ<span class="tooltip-text">Upload a CSV file with two columns (no header): student_id, student_name. This creates accounts for all new students and adds them to this batch.</span></span>
+                </h3>
+                 <div class="csv-instructions" style="margin-bottom: 1.5rem; padding: 1rem; background-color: rgba(0,0,0,0.1); border-radius: 8px; font-size: 0.9rem;">
+                    <p style="margin: 0; font-weight: 600;">CSV File Format Guide:</p>
+                    <ul style="margin: 0.5rem 0 0 1rem; padding-left: 0; list-style-type: disc;">
+                        <li>The first column must be the unique <strong>Student ID</strong>.</li>
+                        <li>The second column must be the student's <strong>Full Name</strong>.</li>
+                        <li>The system will automatically skip the first row, so you can include a header like `student_id,student_name`.</li>
+                        <li>Save the file in CSV (.csv) format.</li>
+                    </ul>
+                </div>
+                <form action="{{ url_for('import_students_csv') }}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="batch_id" value="{{ batch.id }}">
+                    <label for="csv_file">Upload CSV File:</label>
+                    <input type="file" name="csv_file" accept=".csv" required>
+                    <button type="submit">Import from CSV</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/teacher.js') }}"></script>
+</body>
+</html>
+

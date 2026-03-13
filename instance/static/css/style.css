@@ -1,0 +1,215 @@
+/* --- Root Variables & Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700&display=swap');
+
+:root {
+    --bg-primary: #F5F5DC; /* Beige/Ivory */
+    --bg-card: #FFFFFF;
+    --border-tan: #D2B48C; /* Tan */
+    --text-primary: #0B0C10; /* Ink Blue */
+    --text-secondary: #5c5c5c; /* Muted Gray */
+    --accent-primary: #001f3f; /* Navy Blue */
+    --accent-primary-text: #FFFFFF; /* Text on Navy buttons */
+    --accent-secondary: #D2B48C; /* Tan */
+    --danger: #D9534F;
+    --success: #5CB85C;
+}
+
+/* --- General Body & Layout --- */
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+/* --- Navbar --- */
+.navbar {
+    background-color: var(--bg-card);
+    border-bottom: 2px solid var(--accent-primary);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.navbar .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    /* NEW: 3D Engraved Text Effect */
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2), 
+                 -1px -1px 1px rgba(255,255,255,0.7);
+}
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.navbar .nav-links a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s;
+}
+.navbar .nav-links a:hover {
+    color: var(--accent-primary);
+}
+
+/* --- Cards --- */
+.card {
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    /* NEW: More pronounced shadow for a lifted effect */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+/* --- Forms & Interactive Elements --- */
+h1, h2, h3, h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--text-primary);
+    margin-top: 0;
+    font-weight: 700;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+input[type="text"], input[type="password"], input[type="number"], select, input[type="file"] {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    color: var(--text-primary);
+    font-family: 'Lato', sans-serif;
+}
+input::placeholder {
+    color: var(--text-secondary);
+}
+button {
+    background-color: var(--accent-primary);
+    color: var(--accent-primary-text);
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    /* NEW: Subtle shadow for a button-like feel */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+button:hover {
+    background-color: #003366; /* Darker Navy */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+/* NEW: Inset shadow to create a "pressed" effect on click */
+button:active {
+    transform: translateY(0);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+}
+.button-secondary {
+    background-color: transparent;
+    border: 2px solid var(--border-tan);
+    color: var(--accent-primary);
+}
+.button-secondary:hover {
+    background-color: var(--border-tan);
+    color: white;
+}
+
+/* --- Lists, Links & Alerts --- */
+ul { list-style-type: none; padding-left: 0; }
+li {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+}
+li a, .card a {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s;
+}
+li a:hover, .card a:hover {
+    text-decoration: underline;
+}
+.flash-message {
+    padding: 1rem; border-radius: 4px; margin-bottom: 1rem;
+    font-weight: 600;
+    border: 1px solid;
+}
+.flash-success { background-color: #dff0d8; border-color: #d6e9c6; color: #3c763d; }
+.flash-danger { background-color: #f2dede; border-color: #ebccd1; color: #a94442; }
+.flash-warning { background-color: #fcf8e3; border-color: #faebcc; color: #8a6d3b; }
+
+/* --- Auth Pages --- */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+}
+.auth-card a {
+    color: var(--accent-primary);
+}
+
+/* --- Tooltip --- */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 8px;
+    cursor: help;
+}
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 220px;
+    background-color: var(--text-primary);
+    border: 1px solid var(--border-tan);
+    color: var(--bg-primary);
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -110px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+

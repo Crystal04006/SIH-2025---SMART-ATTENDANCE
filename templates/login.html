@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+    <script>
+        // This script applies the theme instantly to prevent a flash of the wrong theme.
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.documentElement.classList.add('light-mode-html');
+        }
+        // A helper class is used here to avoid conflicts until the full body is loaded.
+        // It will be replaced by the main script on other pages.
+    </script>
+    <style>
+        /* This style block ensures the background is set correctly on initial load */
+        .light-mode-html {
+            --bg-start: #FDFEFE;
+            --bg-end: #F8F9FA;
+        }
+    </style>
+</head>
+<body class="{{ 'light-mode' if savedTheme == 'light' else '' }}">
+    <div class="auth-container">
+        <div class="card auth-card">
+            <h2 style="text-align: center; color: var(--accent-primary); font-size: 2rem;">SmartAttend</h2>
+            <h3 style="text-align: center; color: var(--text-secondary); margin-top: -1rem; margin-bottom: 2rem;">Portal Login</h3>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('login') }}" method="post">
+                <select name="institution" required>
+                    <option value="" disabled selected>-- Select Your Institution --</option>
+                    {% for inst in institutions %}
+                    <option value="{{ inst.id }}">{{ inst.name }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" name="username" placeholder="Username / Student ID" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 1.5rem;">
+                <a href="{{ url_for('register_institution') }}">Register a New Institution</a>
+            </p>
+             <p style="text-align: center; margin-top: 0.5rem;">
+                <a href="{{ url_for('forgot_password_info') }}" style="font-size: 0.9rem;">Forgot Password?</a>
+            </p>
+        </div>
+    </div>
+    <script>
+        // Final check to apply the correct class to the body after it's loaded.
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    </script>
+</body>
+</html>
+

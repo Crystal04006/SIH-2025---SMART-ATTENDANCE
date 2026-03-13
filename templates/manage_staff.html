@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Staff</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">SmartAttend</div>
+        <div class="nav-links">
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <span>Admin: {{ user.name }}</span>
+            <button id="theme-toggle">☀️</button>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Manage Staff & Passwords</h1>
+        <a href="{{ url_for('admin_dashboard') }}" style="color: var(--accent-secondary); font-weight: 600;">&larr; Back to Main Dashboard</a>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div style="margin-top: 2rem;">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="grid-container" style="margin-top: 2rem;">
+            <div class="card">
+                <h3>Current Teachers</h3>
+                <ul>
+                    {% for teacher in teachers %}
+                        <li>{{ teacher.name }} - {{ teacher.username }}</li>
+                    {% else %}
+                        <li>No teachers have been added yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Add a New Teacher</h3>
+                <form action="{{ url_for('add_teacher') }}" method="post">
+                    <input type="text" name="name" placeholder="Teacher's Full Name" required>
+                    <input type="text" name="username" placeholder="Teacher's Username" required>
+                    <input type="password" name="password" placeholder="Temporary Password" required>
+                    <button type="submit">Add Teacher</button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Reset a User's Password</h3>
+                <form action="{{ url_for('reset_password') }}" method="post">
+                    <label for="user_id">Select User to Reset:</label>
+                    <select name="user_id" id="user_id" required>
+                        <option value="" disabled selected>-- Select a user --</option>
+                        {% for u in all_users %}
+                            <option value="{{ u.id }}">{{ u.name }} - {{ u.username }} ({{ u.role }})</option>
+                        {% endfor %}
+                    </select>
+                    <input type="password" name="new_password" placeholder="New Temporary Password" required>
+                    <button type="submit" class="button-secondary">Reset Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/teacher.js') }}"></script>
+</body>
+</html>
+

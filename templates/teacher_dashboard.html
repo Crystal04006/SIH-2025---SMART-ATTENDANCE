@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">SmartAttend</div>
+        <div class="nav-links">
+            <span>Welcome, {{ user.name }}</span>
+            <button id="theme-toggle">☀️</button>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="grid-container">
+            <div class="controls">
+                <div class="card">
+                    <h3>
+                        Manage Your Courses
+                        <span class="tooltip">ⓘ<span class="tooltip-text">Add new courses and manage existing ones.</span></span>
+                    </h3>
+                    <ul>
+                        {% for course in courses %}
+                            <li>
+                                <strong>{{ course.name }}</strong> - 
+                                <a href="{{ url_for('manage_course', course_id=course.id) }}">Enroll Students & View Stats</a>
+                            </li>
+                        {% else %}
+                            <li>Please add a course using the form below.</li>
+                        {% endfor %}
+                    </ul>
+                    <form action="{{ url_for('add_course') }}" method="post" style="margin-top: 1rem;">
+                        <input type="text" name="course_name" placeholder="New Course Name" required>
+                        <button type="submit">Add Course</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h3>
+                        Start a New Session
+                        <span class="tooltip">ⓘ<span class="tooltip-text">Generates a live QR code for the selected course.</span></span>
+                    </h3>
+                    {% if courses %}
+                        <select id="course-selector">
+                            <option value="">-- Select a Course --</option>
+                            {% for course in courses %}
+                                <option value="{{ course.id }}">{{ course.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button id="start-session-btn" style="margin-top:1rem;">Start Session</button>
+                        <button id="end-session-btn" style="margin-top:1rem; display: none;" class="button-secondary">End Session</button>
+                    {% else %}
+                        <p>You must add a course before you can start a session.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="session-info">
+                <div class="card">
+                    <h3>Current Session</h3>
+                    <div id="qr-container">
+                        <p>QR code will appear here after starting a session...</p>
+                    </div>
+                    <h4 style="margin-top: 2rem;">Attendance List</h4>
+                    <ul id="attendance-list">
+                        <li>List will appear here...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/teacher.js') }}"></script>
+</body>
+</html>
+
